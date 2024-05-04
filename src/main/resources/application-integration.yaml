@@ -9,9 +9,4 @@ spring:
     port: ${green-mail-port}
     username: spring
     password: boot
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+
