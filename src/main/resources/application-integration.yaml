@@ -1,15 +1,17 @@
-wiremock:
-  server:
-    port: 9999
-
-example-client:
-  url: http://localhost:${wiremock.server.port}
-  read-timeout: 1000ms
-  connect-timeout: 1000ms
-
 server:
   shutdown: immediate
 
 spring:
   main:
     allow-bean-definition-overriding: true
+  mail:
+    host: localhost
+    port: ${green-mail-port}
+    username: spring
+    password: boot
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
