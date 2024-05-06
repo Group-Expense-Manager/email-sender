@@ -1,7 +1,6 @@
 package pl.edu.agh.gem.external.controller
 
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatus.OK
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -12,11 +11,11 @@ import pl.edu.agh.gem.media.InternalApiMediaType.APPLICATION_JSON_INTERNAL_VER_1
 
 @RestController
 class EmailController(
-    @Autowired private val emailService: EmailService,
+    private val emailService: EmailService,
 ) {
 
     @PostMapping("/internal/verification", consumes = [APPLICATION_JSON_INTERNAL_VER_1])
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(OK)
     fun sendVerificationEmail(
         @RequestBody verificationEmailRequest: VerificationEmailRequest,
     ) {

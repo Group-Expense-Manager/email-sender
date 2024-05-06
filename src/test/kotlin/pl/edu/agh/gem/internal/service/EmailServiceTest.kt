@@ -6,15 +6,15 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.springframework.mail.SimpleMailMessage
-import org.springframework.mail.javamail.JavaMailSender
+import pl.edu.agh.gem.internal.client.ExternalEmailSenderClient
 import pl.edu.agh.gem.util.createVerificationEmailDetails
 
 class EmailServiceTest : ShouldSpec({
-    val javaMailSender = mock<JavaMailSender> { }
+    val externalEmailSenderClient = mock<ExternalEmailSenderClient> { }
     val emailProperties = mock<EmailProperties> { }
 
     val emailService = EmailService(
-        javaMailSender = javaMailSender,
+        externalEmailSenderClient = externalEmailSenderClient,
         emailProperties = emailProperties,
     )
 
@@ -26,7 +26,7 @@ class EmailServiceTest : ShouldSpec({
         emailService.sendVerificationEmail(verificationEmailDetails)
 
         // then
-        verify(javaMailSender, times(1)).send(
+        verify(externalEmailSenderClient, times(1)).sendEmail(
             anyVararg(
                 SimpleMailMessage::class,
             ),

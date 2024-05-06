@@ -2,14 +2,12 @@ package pl.edu.agh.gem.integration.environment
 
 import com.icegreen.greenmail.util.GreenMail
 import io.kotest.core.listeners.AfterProjectListener
-import io.kotest.core.listeners.AfterTestListener
 import io.kotest.core.listeners.BeforeProjectListener
 import mu.KotlinLogging
 
 class GreenMailListener(
     private val greenMail: GreenMail,
 ) :
-    AfterTestListener,
     BeforeProjectListener,
     AfterProjectListener {
 
