@@ -2,3 +2,8 @@ spring:
   mail:
     username: ${EMAIL_USERNAME}
     password: ${EMAIL_PASSWORD}
+
+management:
+  health:
+    mail:
+      enabled: false
