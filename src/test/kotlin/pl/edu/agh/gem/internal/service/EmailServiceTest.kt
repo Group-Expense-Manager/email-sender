@@ -7,6 +7,8 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.springframework.mail.SimpleMailMessage
 import pl.edu.agh.gem.internal.client.ExternalEmailSenderClient
+import pl.edu.agh.gem.util.createPasswordEmailDetails
+import pl.edu.agh.gem.util.createPasswordRecoveryEmailDetails
 import pl.edu.agh.gem.util.createVerificationEmailDetails
 
 class EmailServiceTest : ShouldSpec({
@@ -18,12 +20,42 @@ class EmailServiceTest : ShouldSpec({
         emailProperties = emailProperties,
     )
 
-    should("send email") {
+    should("send verification email") {
         // given
         val verificationEmailDetails = createVerificationEmailDetails()
 
         // when
         emailService.sendVerificationEmail(verificationEmailDetails)
+
+        // then
+        verify(externalEmailSenderClient, times(1)).sendEmail(
+            anyVararg(
+                SimpleMailMessage::class,
+            ),
+        )
+    }
+
+    should("send password-recovery email") {
+        // given
+        val passwordRecoveryEmailDetails = createPasswordRecoveryEmailDetails()
+
+        // when
+        emailService.sendPasswordRecoveryEmail(passwordRecoveryEmailDetails)
+
+        // then
+        verify(externalEmailSenderClient, times(1)).sendEmail(
+            anyVararg(
+                SimpleMailMessage::class,
+            ),
+        )
+    }
+
+    should("send password email") {
+        // given
+        val passwordEmailDetails = createPasswordEmailDetails()
+
+        // when
+        emailService.sendPasswordEmail(passwordEmailDetails)
 
         // then
         verify(externalEmailSenderClient, times(1)).sendEmail(

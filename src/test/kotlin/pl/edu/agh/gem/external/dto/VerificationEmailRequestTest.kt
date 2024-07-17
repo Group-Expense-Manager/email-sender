@@ -1,4 +1,4 @@
-package pl.edu.agh.gem.external.dto.verification
+package pl.edu.agh.gem.external.dto
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
