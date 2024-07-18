@@ -17,7 +17,7 @@ class EmailService(
     fun sendVerificationEmail(emailDetails: VerificationEmailDetails) {
         val subject = "Group Expense Manager - Verification code"
         val text = """
-            Dear user,
+            Dear ${emailDetails.username},
             
             Welcome to Group Expense Manager!
             To complete your registration, please verify your email address by entering the verification code below in the app:
@@ -35,7 +35,7 @@ class EmailService(
     fun sendPasswordRecoveryEmail(emailDetails: PasswordRecoveryEmailDetails) {
         val subject = "Group Expense Manager - Password Recovery"
         val text = """
-            Dear user,
+            Dear ${emailDetails.username},
             
             We received a request to reset the password for your account. To proceed with the password recovery, please click the link below:
             
@@ -54,7 +54,7 @@ class EmailService(
     fun sendPasswordEmail(emailDetails: PasswordEmailDetails) {
         val subject = "Group Expense Manager - New Password"
         val text = """
-            Dear user,
+            Dear ${emailDetails.username},
             
             Your password has been successfully reset. Below is your new password:    
                     

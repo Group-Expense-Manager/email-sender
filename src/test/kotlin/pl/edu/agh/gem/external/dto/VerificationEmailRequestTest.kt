@@ -8,20 +8,16 @@ class VerificationEmailRequestTest : ShouldSpec({
 
     should("map correct to VerificationEmailDetails") {
         // given
-        val email = "email@email.com"
-        val code = "123456"
-        val verificationEmailRequest = createVerificationEmailRequest(
-            email = email,
-            code = code,
-        )
+        val verificationEmailRequest = createVerificationEmailRequest()
 
         // when
         val verificationEmailDetail = verificationEmailRequest.toDomain()
 
         // then
         verificationEmailDetail.also {
-            it.email shouldBe email
-            it.code shouldBe code
+            it.username shouldBe verificationEmailRequest.username
+            it.email shouldBe verificationEmailRequest.email
+            it.code shouldBe verificationEmailRequest.code
         }
     }
 },)

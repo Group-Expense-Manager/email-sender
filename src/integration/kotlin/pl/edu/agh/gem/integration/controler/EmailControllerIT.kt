@@ -37,6 +37,7 @@ class EmailControllerIT(
                 it.allRecipients.size shouldBe 1
                 it.allRecipients.first().toString() shouldBe verificationEmailRequest.email
                 it.subject.shouldNotBeNull()
+                it.content.toString() shouldContain verificationEmailRequest.username
                 it.content.toString() shouldContain verificationEmailRequest.code
             }
         }
@@ -60,6 +61,7 @@ class EmailControllerIT(
                 it.allRecipients.size shouldBe 1
                 it.allRecipients.first().toString() shouldBe passwordRecoveryEmailRequest.email
                 it.subject.shouldNotBeNull()
+                it.content.toString() shouldContain passwordRecoveryEmailRequest.username
                 it.content.toString() shouldContain passwordRecoveryEmailRequest.link
             }
         }
@@ -83,6 +85,7 @@ class EmailControllerIT(
                 it.allRecipients.size shouldBe 1
                 it.allRecipients.first().toString() shouldBe passwordEmailRequest.email
                 it.subject.shouldNotBeNull()
+                it.content.toString() shouldContain passwordEmailRequest.username
                 it.content.toString() shouldContain passwordEmailRequest.password
             }
         }

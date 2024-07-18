@@ -8,20 +8,16 @@ class PasswordEmailRequestTest : ShouldSpec({
 
     should("map correct to PasswordEmailDetails") {
         // given
-        val email = "email@email.com"
-        val password = "password"
-        val passwordEmailRequest = createPasswordEmailRequest(
-            email = email,
-            password = password,
-        )
+        val passwordEmailRequest = createPasswordEmailRequest()
 
         // when
         val passwordEmailDetail = passwordEmailRequest.toDomain()
 
         // then
         passwordEmailDetail.also {
-            it.email shouldBe email
-            it.password shouldBe password
+            it.username shouldBe passwordEmailRequest.username
+            it.email shouldBe passwordEmailRequest.email
+            it.password shouldBe passwordEmailRequest.password
         }
     }
 },)
