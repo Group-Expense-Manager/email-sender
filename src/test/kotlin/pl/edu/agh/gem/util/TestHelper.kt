@@ -77,4 +77,6 @@ object DummyData {
     const val DUMMY_CODE = "user123"
     const val DUMMY_LINK = "http:/some.url/some/link"
     const val DUMMY_PASSWORD = "Password!123"
+    const val DUMMY_SUBJECT = "HI"
+    const val DUMMY_HTML = "<html></html>"
 }

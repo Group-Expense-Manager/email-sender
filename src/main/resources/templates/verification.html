@@ -45,6 +45,9 @@
             font-size: 24px;
             font-weight: bold;
         }
+        .code-container {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -61,9 +64,9 @@
 
         <p>Welcome to Group Expense Manager!</p>
         <p>To complete your registration, please verify your email address by entering the verification code below in the app:</p>
-
-        <p class="verification-code"><strong>${emailDetails.code}</strong></p>
-
+        <div class="code-container">
+            <p class="verification-code"><strong>${emailDetails.code}</strong></p>
+        </div>
         <p>If you did not sign up for an account with Group Expense Manager, please ignore this email. For any assistance, feel free to contact our support team.</p>
 
         <p>Best regards,<br/>
