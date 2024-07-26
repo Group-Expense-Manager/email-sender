@@ -1,8 +1,8 @@
 package pl.edu.agh.gem.internal.client
 
-import org.springframework.mail.SimpleMailMessage
+import jakarta.mail.internet.MimeMessage
 
 interface ExternalEmailSenderClient {
-    fun sendEmail(email: SimpleMailMessage)
+    fun sendEmail(mimeMessage: MimeMessage)
 }
 class RetryableEmailSenderClientException(override val message: String?) : RuntimeException()

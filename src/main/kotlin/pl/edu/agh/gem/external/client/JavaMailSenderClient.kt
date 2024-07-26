@@ -1,9 +1,9 @@
 package pl.edu.agh.gem.external.client
 
 import io.github.resilience4j.retry.annotation.Retry
+import jakarta.mail.internet.MimeMessage
 import mu.KotlinLogging
 import org.springframework.mail.MailException
-import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Component
 import pl.edu.agh.gem.internal.client.ExternalEmailSenderClient
@@ -15,9 +15,9 @@ class JavaMailSenderClient(
 ) : ExternalEmailSenderClient {
 
     @Retry(name = "default")
-    override fun sendEmail(email: SimpleMailMessage) {
+    override fun sendEmail(mimeMessage: MimeMessage) {
         try {
-            javaMailSender.send(email)
+            javaMailSender.send(mimeMessage)
         } catch (ex: MailException) {
             logger.warn(ex) { "Server side exception while trying to send verification email" }
             throw RetryableEmailSenderClientException(ex.message)

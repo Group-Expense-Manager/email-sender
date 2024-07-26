@@ -1,6 +1,7 @@
 package pl.edu.agh.gem.integration
 
 import io.kotest.core.spec.style.ShouldSpec
+import io.kotest.core.test.TestCaseOrder
 import mu.KotlinLogging
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
@@ -16,6 +17,8 @@ import pl.edu.agh.gem.integration.environment.ProjectConfig
 )
 @ActiveProfiles("integration")
 abstract class BaseIntegrationSpec(body: ShouldSpec.() -> Unit) : ShouldSpec(body) {
+
+    override fun testCaseOrder(): TestCaseOrder? = TestCaseOrder.Sequential
     companion object {
         @JvmStatic
         @DynamicPropertySource

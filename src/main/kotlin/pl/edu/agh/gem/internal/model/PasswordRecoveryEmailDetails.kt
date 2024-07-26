@@ -1,7 +1,7 @@
 package pl.edu.agh.gem.internal.model
 
-data class VerificationEmailDetails(
+data class PasswordRecoveryEmailDetails(
     val username: String,
     val email: String,
-    val code: String,
+    val link: String,
 )
