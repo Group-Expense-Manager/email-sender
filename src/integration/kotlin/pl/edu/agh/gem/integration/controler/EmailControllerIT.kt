@@ -2,12 +2,19 @@ package pl.edu.agh.gem.integration.controler
 
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import jakarta.mail.Part
+import jakarta.mail.internet.MimeMessage
+import jakarta.mail.internet.MimeMultipart
 import org.springframework.http.HttpStatus.OK
 import pl.edu.agh.gem.assertion.shouldHaveHttpStatus
+import pl.edu.agh.gem.helper.user.DummyUser.EMAIL
 import pl.edu.agh.gem.integration.BaseIntegrationSpec
 import pl.edu.agh.gem.integration.ability.ServiceTestClient
 import pl.edu.agh.gem.integration.environment.ProjectConfig.greenMail
 import pl.edu.agh.gem.integration.environment.ProjectConfig.stubGreenMail
+import pl.edu.agh.gem.util.DummyData.DUMMY_FILE_NAME
+import pl.edu.agh.gem.util.DummyData.DUMMY_USERNAME
+import pl.edu.agh.gem.util.TestHelper.CSV_FILE
 import pl.edu.agh.gem.util.createPasswordEmailRequest
 import pl.edu.agh.gem.util.createPasswordRecoveryEmailRequest
 import pl.edu.agh.gem.util.createVerificationEmailRequest
@@ -85,5 +92,40 @@ class EmailControllerIT(
                 it.content.shouldNotBeNull()
             }
         }
+
+        should("send report email") {
+            // given
+
+            val (login, _) = stubGreenMail("spring", "boot")
+
+            // when
+            val response = service.sendReport(CSV_FILE, EMAIL, DUMMY_USERNAME, DUMMY_FILE_NAME)
+
+            // then
+            response shouldHaveHttpStatus OK
+
+            greenMail.receivedMessages.size shouldBe 4
+            greenMail.receivedMessages.last().also {
+                it.from.size shouldBe 1
+                it.from.first().toString() shouldBe login
+                it.allRecipients.size shouldBe 1
+                it.allRecipients.first().toString() shouldBe EMAIL
+                it.subject.shouldNotBeNull()
+                it.content.shouldNotBeNull()
+                hasAttachment(it) shouldBe true
+            }
+        }
     },
 )
+
+fun hasAttachment(message: MimeMessage): Boolean {
+    val content = message.content
+    return if (content is MimeMultipart) {
+        (0 until content.count).any { index ->
+            val disposition = content.getBodyPart(index).disposition
+            disposition.equals(Part.ATTACHMENT, ignoreCase = true)
+        }
+    } else {
+        false
+    }
+}

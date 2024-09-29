@@ -7,6 +7,7 @@ import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE_RELATED
 import org.springframework.stereotype.Component
 import pl.edu.agh.gem.internal.factory.EmailFactory
+import pl.edu.agh.gem.internal.model.Attachment
 import pl.edu.agh.gem.internal.service.EmailProperties
 import kotlin.text.Charsets.UTF_8
 
@@ -15,13 +16,17 @@ class EmailFactoryImpl(
     private val javaMailSender: JavaMailSender,
     private val emailProperties: EmailProperties,
 ) : EmailFactory {
-    override fun createEmail(email: String, subject: String, html: String): MimeMessage {
+    override fun createEmail(email: String, subject: String, html: String, attachment: Attachment?): MimeMessage {
         val mimeMessage: MimeMessage = javaMailSender.createMimeMessage()
         val helper = MimeMessageHelper(mimeMessage, MULTIPART_MODE_RELATED, UTF_8.name())
         helper.setFrom(emailProperties.username)
         helper.setTo(email)
         helper.setSubject(subject)
         helper.setText(html, true)
+
+        attachment?.also {
+            helper.addAttachment(attachment.name, attachment.file)
+        }
 
         val contentId = CONTENT_ID
         val icon = ICON_PATH

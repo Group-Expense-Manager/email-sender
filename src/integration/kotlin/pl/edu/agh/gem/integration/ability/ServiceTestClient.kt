@@ -42,4 +42,18 @@ class ServiceTestClient(applicationContext: WebApplicationContext) {
             .bodyValue(body)
             .exchange()
     }
+
+    fun sendReport(body: ByteArray, email: String, username: String, fileName: String): ResponseSpec {
+        return webClient.post()
+            .uri {
+                it.path("$INTERNAL/report")
+                    .queryParam("email", email)
+                    .queryParam("username", username)
+                    .queryParam("fileName", fileName)
+                    .build()
+            }
+            .headers { it.withAppContentType() }
+            .bodyValue(body)
+            .exchange()
+    }
 }

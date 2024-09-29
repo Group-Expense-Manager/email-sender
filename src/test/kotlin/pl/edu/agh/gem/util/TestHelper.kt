@@ -1,16 +1,21 @@
 package pl.edu.agh.gem.util
 
+import org.springframework.core.io.ByteArrayResource
 import pl.edu.agh.gem.external.dto.PasswordEmailRequest
 import pl.edu.agh.gem.external.dto.PasswordRecoveryEmailRequest
 import pl.edu.agh.gem.external.dto.VerificationEmailRequest
 import pl.edu.agh.gem.helper.user.DummyUser.EMAIL
+import pl.edu.agh.gem.internal.model.Attachment
 import pl.edu.agh.gem.internal.model.PasswordEmailDetails
 import pl.edu.agh.gem.internal.model.PasswordRecoveryEmailDetails
 import pl.edu.agh.gem.internal.model.VerificationEmailDetails
 import pl.edu.agh.gem.util.DummyData.DUMMY_CODE
+import pl.edu.agh.gem.util.DummyData.DUMMY_FILE_NAME
 import pl.edu.agh.gem.util.DummyData.DUMMY_LINK
 import pl.edu.agh.gem.util.DummyData.DUMMY_PASSWORD
 import pl.edu.agh.gem.util.DummyData.DUMMY_USERNAME
+import pl.edu.agh.gem.util.ResourceLoader.loadResourceAsByteArray
+import pl.edu.agh.gem.util.TestHelper.CSV_FILE
 
 fun createVerificationEmailRequest(
     username: String = DUMMY_USERNAME,
@@ -72,6 +77,14 @@ fun createPasswordEmailDetails(
     password = password,
 )
 
+fun createAttachment(
+    name: String = DUMMY_FILE_NAME,
+    file: ByteArrayResource = ByteArrayResource(CSV_FILE),
+) = Attachment(
+    name = name,
+    file = file,
+)
+
 object DummyData {
     const val DUMMY_USERNAME = "user123"
     const val DUMMY_CODE = "user123"
@@ -79,4 +92,9 @@ object DummyData {
     const val DUMMY_PASSWORD = "Password!123"
     const val DUMMY_SUBJECT = "HI"
     const val DUMMY_HTML = "<html></html>"
+    const val DUMMY_FILE_NAME = "example.csv"
+}
+
+object TestHelper {
+    val CSV_FILE = loadResourceAsByteArray("example.csv")
 }

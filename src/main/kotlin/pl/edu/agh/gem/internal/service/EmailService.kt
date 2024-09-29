@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service
 import pl.edu.agh.gem.internal.client.ExternalEmailSenderClient
 import pl.edu.agh.gem.internal.factory.EmailFactory
 import pl.edu.agh.gem.internal.filereader.FileReader
+import pl.edu.agh.gem.internal.model.Attachment
 import pl.edu.agh.gem.internal.model.PasswordEmailDetails
 import pl.edu.agh.gem.internal.model.PasswordRecoveryEmailDetails
 import pl.edu.agh.gem.internal.model.VerificationEmailDetails
@@ -38,14 +39,22 @@ class EmailService(
         externalEmailSenderClient.sendEmail(emailFactory.createEmail(emailDetails.email, PASSWORD_EMAIL_SUBJECT, text))
     }
 
+    fun sendReport(email: String, username: String, attachment: Attachment) {
+        val text = fileReader.read(REPORT_HTML_PATH)
+            .replace(USERNAME_INTERPOLATION_STRING, username)
+        externalEmailSenderClient.sendEmail(emailFactory.createEmail(email, REPORT_EMAIL_SUBJECT, text, attachment))
+    }
+
     companion object {
         const val VERIFICATION_EMAIL_SUBJECT = "Group Expense Manager - Verification Code"
         const val PASSWORD_RECOVERY_EMAIL_SUBJECT = "Group Expense Manager - Password Recovery"
         const val PASSWORD_EMAIL_SUBJECT = "Group Expense Manager - New Password"
+        const val REPORT_EMAIL_SUBJECT = "Group Expense Manager - Report"
 
         const val VERIFICATION_HTML_PATH = "templates/verification.html"
         const val PASSWORD_RECOVERY_HTML_PATH = "templates/password-recovery.html"
         const val PASSWORD_HTML_PATH = "templates/new-password.html"
+        const val REPORT_HTML_PATH = "templates/report.html"
 
         const val USERNAME_INTERPOLATION_STRING = "\${emailDetails.username}"
         const val CODE_INTERPOLATION_STRING = "\${emailDetails.code}"

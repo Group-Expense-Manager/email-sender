@@ -4,14 +4,18 @@ import io.kotest.core.spec.style.ShouldSpec
 import jakarta.mail.internet.MimeMessage
 import org.mockito.kotlin.any
 import org.mockito.kotlin.anyVararg
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import pl.edu.agh.gem.helper.user.DummyUser.EMAIL
 import pl.edu.agh.gem.internal.client.ExternalEmailSenderClient
 import pl.edu.agh.gem.internal.factory.EmailFactory
 import pl.edu.agh.gem.internal.filereader.FileReader
 import pl.edu.agh.gem.util.DummyData.DUMMY_HTML
+import pl.edu.agh.gem.util.DummyData.DUMMY_USERNAME
+import pl.edu.agh.gem.util.createAttachment
 import pl.edu.agh.gem.util.createPasswordEmailDetails
 import pl.edu.agh.gem.util.createPasswordRecoveryEmailDetails
 import pl.edu.agh.gem.util.createVerificationEmailDetails
@@ -32,7 +36,7 @@ class EmailServiceTest : ShouldSpec({
         // given
         val verificationEmailDetails = createVerificationEmailDetails()
         whenever(fileReader.read(any())).thenReturn(DUMMY_HTML)
-        whenever(emailFactory.createEmail(any(), any(), any())).thenReturn(mimeMessage)
+        whenever(emailFactory.createEmail(any(), any(), any(), eq(null))).thenReturn(mimeMessage)
 
         // when
         emailService.sendVerificationEmail(verificationEmailDetails)
@@ -46,7 +50,7 @@ class EmailServiceTest : ShouldSpec({
         // given
         val passwordRecoveryEmailDetails = createPasswordRecoveryEmailDetails()
         whenever(fileReader.read(anyVararg())).thenReturn(DUMMY_HTML)
-        whenever(emailFactory.createEmail(any(), any(), any())).thenReturn(mimeMessage)
+        whenever(emailFactory.createEmail(any(), any(), any(), eq(null))).thenReturn(mimeMessage)
 
         // when
         emailService.sendPasswordRecoveryEmail(passwordRecoveryEmailDetails)
@@ -60,10 +64,23 @@ class EmailServiceTest : ShouldSpec({
         // given
         val passwordEmailDetails = createPasswordEmailDetails()
         whenever(fileReader.read(anyVararg())).thenReturn(DUMMY_HTML)
-        whenever(emailFactory.createEmail(any(), any(), any())).thenReturn(mimeMessage)
+        whenever(emailFactory.createEmail(any(), any(), any(), eq(null))).thenReturn(mimeMessage)
 
         // when
         emailService.sendPasswordEmail(passwordEmailDetails)
+
+        // then
+        verify(fileReader, times(1)).read(any())
+        verify(externalEmailSenderClient, times(1)).sendEmail(any())
+    }
+
+    should("send report email") {
+        // given
+        whenever(fileReader.read(anyVararg())).thenReturn(DUMMY_HTML)
+        whenever(emailFactory.createEmail(any(), any(), any(), any())).thenReturn(mimeMessage)
+
+        // when
+        emailService.sendReport(EMAIL, DUMMY_USERNAME, createAttachment())
 
         // then
         verify(fileReader, times(1)).read(any())
