@@ -120,12 +120,8 @@ class EmailControllerIT(
 
 fun hasAttachment(message: MimeMessage): Boolean {
     val content = message.content
-    return if (content is MimeMultipart) {
+    return content is MimeMultipart &&
         (0 until content.count).any { index ->
-            val disposition = content.getBodyPart(index).disposition
-            disposition.equals(Part.ATTACHMENT, ignoreCase = true)
+            content.getBodyPart(index).disposition.equals(Part.ATTACHMENT, ignoreCase = true)
         }
-    } else {
-        false
-    }
 }
