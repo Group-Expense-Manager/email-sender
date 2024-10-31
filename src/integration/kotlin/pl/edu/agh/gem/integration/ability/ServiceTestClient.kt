@@ -7,6 +7,7 @@ import org.springframework.test.web.servlet.client.MockMvcWebTestClient.bindToAp
 import org.springframework.web.context.WebApplicationContext
 import pl.edu.agh.gem.external.dto.PasswordEmailRequest
 import pl.edu.agh.gem.external.dto.PasswordRecoveryEmailRequest
+import pl.edu.agh.gem.external.dto.ReportEmailRequest
 import pl.edu.agh.gem.external.dto.VerificationEmailRequest
 import pl.edu.agh.gem.headers.HeadersUtils.withAppContentType
 import pl.edu.agh.gem.paths.Paths.INTERNAL
@@ -43,15 +44,9 @@ class ServiceTestClient(applicationContext: WebApplicationContext) {
             .exchange()
     }
 
-    fun sendReport(body: ByteArray, email: String, username: String, fileName: String): ResponseSpec {
+    fun sendReport(body: ReportEmailRequest): ResponseSpec {
         return webClient.post()
-            .uri {
-                it.path("$INTERNAL/report")
-                    .queryParam("email", email)
-                    .queryParam("username", username)
-                    .queryParam("fileName", fileName)
-                    .build()
-            }
+            .uri(URI("$INTERNAL/report"))
             .headers { it.withAppContentType() }
             .bodyValue(body)
             .exchange()

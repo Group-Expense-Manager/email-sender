@@ -7,16 +7,18 @@ import jakarta.mail.internet.MimeMessage
 import jakarta.mail.internet.MimeMultipart
 import org.springframework.http.HttpStatus.OK
 import pl.edu.agh.gem.assertion.shouldHaveHttpStatus
+import pl.edu.agh.gem.helper.group.DummyGroup.GROUP_ID
 import pl.edu.agh.gem.helper.user.DummyUser.EMAIL
 import pl.edu.agh.gem.integration.BaseIntegrationSpec
 import pl.edu.agh.gem.integration.ability.ServiceTestClient
+import pl.edu.agh.gem.integration.ability.stubReport
 import pl.edu.agh.gem.integration.environment.ProjectConfig.greenMail
 import pl.edu.agh.gem.integration.environment.ProjectConfig.stubGreenMail
-import pl.edu.agh.gem.util.DummyData.DUMMY_FILE_NAME
-import pl.edu.agh.gem.util.DummyData.DUMMY_USERNAME
+import pl.edu.agh.gem.util.DummyData.ATTACHMENT_ID
 import pl.edu.agh.gem.util.TestHelper.CSV_FILE
 import pl.edu.agh.gem.util.createPasswordEmailRequest
 import pl.edu.agh.gem.util.createPasswordRecoveryEmailRequest
+import pl.edu.agh.gem.util.createReportEmailRequest
 import pl.edu.agh.gem.util.createVerificationEmailRequest
 
 class EmailControllerIT(
@@ -95,11 +97,12 @@ class EmailControllerIT(
 
         should("send report email") {
             // given
-
+            val reportEmailRequest = createReportEmailRequest()
             val (login, _) = stubGreenMail("spring", "boot")
+            stubReport(CSV_FILE, GROUP_ID, ATTACHMENT_ID)
 
             // when
-            val response = service.sendReport(CSV_FILE, EMAIL, DUMMY_USERNAME, DUMMY_FILE_NAME)
+            val response = service.sendReport(reportEmailRequest)
 
             // then
             response shouldHaveHttpStatus OK

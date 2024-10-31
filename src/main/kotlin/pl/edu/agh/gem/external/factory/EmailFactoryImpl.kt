@@ -25,7 +25,7 @@ class EmailFactoryImpl(
         helper.setText(html, true)
 
         attachment?.also {
-            helper.addAttachment(attachment.name, attachment.file)
+            helper.addAttachment(attachment.title, attachment.file)
         }
 
         val contentId = CONTENT_ID

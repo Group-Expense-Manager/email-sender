@@ -3,12 +3,16 @@ package pl.edu.agh.gem.util
 import org.springframework.core.io.ByteArrayResource
 import pl.edu.agh.gem.external.dto.PasswordEmailRequest
 import pl.edu.agh.gem.external.dto.PasswordRecoveryEmailRequest
+import pl.edu.agh.gem.external.dto.ReportEmailRequest
 import pl.edu.agh.gem.external.dto.VerificationEmailRequest
+import pl.edu.agh.gem.helper.group.DummyGroup.GROUP_ID
 import pl.edu.agh.gem.helper.user.DummyUser.EMAIL
 import pl.edu.agh.gem.internal.model.Attachment
 import pl.edu.agh.gem.internal.model.PasswordEmailDetails
 import pl.edu.agh.gem.internal.model.PasswordRecoveryEmailDetails
+import pl.edu.agh.gem.internal.model.ReportEmailDetails
 import pl.edu.agh.gem.internal.model.VerificationEmailDetails
+import pl.edu.agh.gem.util.DummyData.ATTACHMENT_ID
 import pl.edu.agh.gem.util.DummyData.DUMMY_CODE
 import pl.edu.agh.gem.util.DummyData.DUMMY_FILE_NAME
 import pl.edu.agh.gem.util.DummyData.DUMMY_LINK
@@ -47,6 +51,20 @@ fun createPasswordRecoveryEmailRequest(
     link = link,
 )
 
+fun createReportEmailRequest(
+    username: String = DUMMY_USERNAME,
+    email: String = EMAIL,
+    title: String = "My report",
+    groupId: String = GROUP_ID,
+    attachmentId: String = ATTACHMENT_ID,
+) = ReportEmailRequest(
+    username = username,
+    email = email,
+    title = title,
+    groupId = groupId,
+    attachmentId = attachmentId,
+)
+
 fun createPasswordRecoveryEmailDetails(
     username: String = DUMMY_USERNAME,
     email: String = EMAIL,
@@ -77,11 +95,25 @@ fun createPasswordEmailDetails(
     password = password,
 )
 
+fun createReportEmailDetails(
+    username: String = DUMMY_USERNAME,
+    email: String = EMAIL,
+    title: String = "My report",
+    groupId: String = GROUP_ID,
+    attachmentId: String = ATTACHMENT_ID,
+) = ReportEmailDetails(
+    username = username,
+    email = email,
+    title = title,
+    groupId = groupId,
+    attachmentId = attachmentId,
+)
+
 fun createAttachment(
     name: String = DUMMY_FILE_NAME,
     file: ByteArrayResource = ByteArrayResource(CSV_FILE),
 ) = Attachment(
-    name = name,
+    title = name,
     file = file,
 )
 
@@ -93,6 +125,7 @@ object DummyData {
     const val DUMMY_SUBJECT = "HI"
     const val DUMMY_HTML = "<html></html>"
     const val DUMMY_FILE_NAME = "example.csv"
+    const val ATTACHMENT_ID = "attachmentId"
 }
 
 object TestHelper {

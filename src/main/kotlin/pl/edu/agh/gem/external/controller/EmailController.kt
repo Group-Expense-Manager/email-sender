@@ -1,17 +1,15 @@
 package pl.edu.agh.gem.external.controller
 
-import org.springframework.core.io.ByteArrayResource
 import org.springframework.http.HttpStatus.OK
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import pl.edu.agh.gem.external.dto.PasswordEmailRequest
 import pl.edu.agh.gem.external.dto.PasswordRecoveryEmailRequest
+import pl.edu.agh.gem.external.dto.ReportEmailRequest
 import pl.edu.agh.gem.external.dto.VerificationEmailRequest
-import pl.edu.agh.gem.internal.model.Attachment
 import pl.edu.agh.gem.internal.service.EmailService
 import pl.edu.agh.gem.media.InternalApiMediaType.APPLICATION_JSON_INTERNAL_VER_1
 import pl.edu.agh.gem.paths.Paths.INTERNAL
@@ -49,11 +47,8 @@ class EmailController(
     @PostMapping("report", consumes = [APPLICATION_JSON_INTERNAL_VER_1])
     @ResponseStatus(OK)
     fun sendReport(
-        @RequestParam email: String,
-        @RequestParam username: String,
-        @RequestParam fileName: String,
-        @RequestBody fileBytes: ByteArray,
+        @RequestBody reportEmailRequest: ReportEmailRequest,
     ) {
-        emailService.sendReport(email, username, Attachment(fileName, ByteArrayResource(fileBytes)))
+        emailService.sendReport(reportEmailRequest.toDomain())
     }
 }
