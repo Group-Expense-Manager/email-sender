@@ -15,7 +15,7 @@ class PasswordEmailRequestTest : ShouldSpec({
 
         // then
         passwordEmailDetail.also {
-            it.username shouldBe passwordEmailRequest.username
+            it.userId shouldBe passwordEmailRequest.userId
             it.email shouldBe passwordEmailRequest.email
             it.password shouldBe passwordEmailRequest.password
         }

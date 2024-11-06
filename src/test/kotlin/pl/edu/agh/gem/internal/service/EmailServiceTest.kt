@@ -9,11 +9,16 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import pl.edu.agh.gem.helper.user.DummyUser.EMAIL
+import pl.edu.agh.gem.helper.user.DummyUser.USER_ID
 import pl.edu.agh.gem.internal.client.AttachmentStoreClient
+import pl.edu.agh.gem.internal.client.AuthenticatorClient
 import pl.edu.agh.gem.internal.client.ExternalEmailSenderClient
+import pl.edu.agh.gem.internal.client.UserDetailsManagerClient
 import pl.edu.agh.gem.internal.factory.EmailFactory
 import pl.edu.agh.gem.internal.filereader.FileReader
 import pl.edu.agh.gem.util.DummyData.DUMMY_HTML
+import pl.edu.agh.gem.util.DummyData.DUMMY_USERNAME
 import pl.edu.agh.gem.util.TestHelper.CSV_FILE
 import pl.edu.agh.gem.util.createPasswordEmailDetails
 import pl.edu.agh.gem.util.createPasswordRecoveryEmailDetails
@@ -23,6 +28,8 @@ import pl.edu.agh.gem.util.createVerificationEmailDetails
 class EmailServiceTest : ShouldSpec({
     val externalEmailSenderClient = mock<ExternalEmailSenderClient> { }
     val attachmentStoreClient = mock<AttachmentStoreClient> { }
+    val authenticatorClient = mock<AuthenticatorClient> { }
+    val userDetailsManagerClient = mock<UserDetailsManagerClient> { }
     val fileReader = mock<FileReader>()
     val emailFactory = mock<EmailFactory> {}
     val mimeMessage = mock<MimeMessage> {}
@@ -30,6 +37,8 @@ class EmailServiceTest : ShouldSpec({
     val emailService = EmailService(
         externalEmailSenderClient = externalEmailSenderClient,
         attachmentStoreClient = attachmentStoreClient,
+        authenticatorClient = authenticatorClient,
+        userDetailsManagerClient = userDetailsManagerClient,
         fileReader = fileReader,
         emailFactory = emailFactory,
     )
@@ -53,6 +62,7 @@ class EmailServiceTest : ShouldSpec({
         val passwordRecoveryEmailDetails = createPasswordRecoveryEmailDetails()
         whenever(fileReader.read(anyVararg())).thenReturn(DUMMY_HTML)
         whenever(emailFactory.createEmail(any(), any(), any(), eq(null))).thenReturn(mimeMessage)
+        whenever(userDetailsManagerClient.getUsername(USER_ID)).thenReturn(DUMMY_USERNAME)
 
         // when
         emailService.sendPasswordRecoveryEmail(passwordRecoveryEmailDetails)
@@ -60,6 +70,7 @@ class EmailServiceTest : ShouldSpec({
         // then
         verify(fileReader, times(1)).read(any())
         verify(externalEmailSenderClient, times(1)).sendEmail(any())
+        verify(userDetailsManagerClient, times(1)).getUsername(USER_ID)
     }
 
     should("send password email") {
@@ -67,6 +78,7 @@ class EmailServiceTest : ShouldSpec({
         val passwordEmailDetails = createPasswordEmailDetails()
         whenever(fileReader.read(anyVararg())).thenReturn(DUMMY_HTML)
         whenever(emailFactory.createEmail(any(), any(), any(), eq(null))).thenReturn(mimeMessage)
+        whenever(userDetailsManagerClient.getUsername(USER_ID)).thenReturn(DUMMY_USERNAME)
 
         // when
         emailService.sendPasswordEmail(passwordEmailDetails)
@@ -74,6 +86,7 @@ class EmailServiceTest : ShouldSpec({
         // then
         verify(fileReader, times(1)).read(any())
         verify(externalEmailSenderClient, times(1)).sendEmail(any())
+        verify(userDetailsManagerClient, times(1)).getUsername(USER_ID)
     }
 
     should("send report email") {
@@ -82,6 +95,9 @@ class EmailServiceTest : ShouldSpec({
         whenever(fileReader.read(anyVararg())).thenReturn(DUMMY_HTML)
         whenever(emailFactory.createEmail(any(), any(), any(), any())).thenReturn(mimeMessage)
         whenever(attachmentStoreClient.getReport(any(), any())).thenReturn(CSV_FILE)
+        whenever(authenticatorClient.getEmailAddress(USER_ID)).thenReturn(EMAIL)
+        whenever(userDetailsManagerClient.getUsername(USER_ID)).thenReturn(DUMMY_USERNAME)
+
         // when
         emailService.sendReport(reportEmailDetails)
 
@@ -89,5 +105,7 @@ class EmailServiceTest : ShouldSpec({
         verify(fileReader, times(1)).read(any())
         verify(externalEmailSenderClient, times(1)).sendEmail(any())
         verify(attachmentStoreClient, times(1)).getReport(any(), any())
+        verify(authenticatorClient, times(1)).getEmailAddress(USER_ID)
+        verify(userDetailsManagerClient, times(1)).getUsername(USER_ID)
     }
 },)

@@ -19,3 +19,13 @@ attachment-store:
   url: http://localhost:${wiremock.server.port}
   read-timeout: 1000ms
   connect-timeout: 1000ms
+
+authenticator:
+  url: http://localhost:${wiremock.server.port}
+  read-timeout: 1000ms
+  connect-timeout: 1000ms
+
+user-details-manager-client:
+  url: http://localhost:${wiremock.server.port}
+  read-timeout: 1000ms
+  connect-timeout: 1000ms
