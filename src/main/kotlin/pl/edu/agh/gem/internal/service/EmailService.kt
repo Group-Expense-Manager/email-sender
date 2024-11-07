@@ -50,10 +50,10 @@ class EmailService(
     }
 
     fun sendReport(emailDetails: ReportEmailDetails) {
-        val username = userDetailsManagerClient.getUsername(emailDetails.userId)
+        val username = userDetailsManagerClient.getUsername(emailDetails.creatorId)
         val text = fileReader.read(REPORT_HTML_PATH)
             .replace(USERNAME_INTERPOLATION_STRING, username)
-        val email = authenticatorClient.getEmailAddress(emailDetails.userId)
+        val email = authenticatorClient.getEmailAddress(emailDetails.creatorId)
         val report = attachmentStoreClient.getReport(emailDetails.groupId, emailDetails.attachmentId)
         val attachment = Attachment(file = ByteArrayResource(report), title = emailDetails.title)
         externalEmailSenderClient.sendEmail(emailFactory.createEmail(email, REPORT_EMAIL_SUBJECT, text, attachment))

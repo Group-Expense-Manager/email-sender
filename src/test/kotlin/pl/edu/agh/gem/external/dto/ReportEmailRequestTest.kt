@@ -15,7 +15,7 @@ class ReportEmailRequestTest : ShouldSpec({
 
         // then
         reportEmailDetails.also {
-            it.userId shouldBe reportEmailRequest.userId
+            it.creatorId shouldBe reportEmailRequest.creatorId
             it.title shouldBe reportEmailRequest.title
             it.groupId shouldBe reportEmailRequest.groupId
             it.attachmentId shouldBe reportEmailRequest.attachmentId

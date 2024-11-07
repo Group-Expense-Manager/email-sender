@@ -51,12 +51,12 @@ fun createPasswordRecoveryEmailRequest(
 )
 
 fun createReportEmailRequest(
-    userId: String = USER_ID,
+    creatorId: String = USER_ID,
     title: String = "My report",
     groupId: String = GROUP_ID,
     attachmentId: String = ATTACHMENT_ID,
 ) = ReportEmailRequest(
-    userId = userId,
+    creatorId = creatorId,
     title = title,
     groupId = groupId,
     attachmentId = attachmentId,
@@ -93,12 +93,12 @@ fun createPasswordEmailDetails(
 )
 
 fun createReportEmailDetails(
-    userId: String = USER_ID,
+    creatorId: String = USER_ID,
     title: String = "My report",
     groupId: String = GROUP_ID,
     attachmentId: String = ATTACHMENT_ID,
 ) = ReportEmailDetails(
-    userId = userId,
+    creatorId = creatorId,
     title = title,
     groupId = groupId,
     attachmentId = attachmentId,

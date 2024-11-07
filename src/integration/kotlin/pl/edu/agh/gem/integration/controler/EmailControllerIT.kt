@@ -105,7 +105,7 @@ class EmailControllerIT(
 
         should("send report email") {
             // given
-            val reportEmailRequest = createReportEmailRequest(userId = USER_ID)
+            val reportEmailRequest = createReportEmailRequest(creatorId = USER_ID)
             val (login, _) = stubGreenMail("spring", "boot")
             stubReport(CSV_FILE, GROUP_ID, ATTACHMENT_ID)
             stubEmailAddress(createEmailAddressResponse(EMAIL), USER_ID)
