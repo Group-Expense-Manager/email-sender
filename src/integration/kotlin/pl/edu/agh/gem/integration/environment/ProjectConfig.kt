@@ -14,7 +14,7 @@ object ProjectConfig : AbstractProjectConfig() {
     private const val WIREMOCK_SERVER_PORT = 9999
     val GREEN_MAIL_PORT = TestSocketUtils.findAvailableTcpPort()
 
-    private val wiremock = WireMockServer(WIREMOCK_SERVER_PORT)
+    val wiremock = WireMockServer(WIREMOCK_SERVER_PORT)
     private val wiremockListener = WireMockListener(wiremock)
     val greenMail = GreenMail(ServerSetup(GREEN_MAIL_PORT, null, PROTOCOL_SMTP))
     private val greenMailListener = GreenMailListener(greenMail)

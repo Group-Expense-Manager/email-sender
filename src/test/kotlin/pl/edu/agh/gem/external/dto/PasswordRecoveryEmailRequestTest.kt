@@ -15,7 +15,7 @@ class PasswordRecoveryEmailRequestTest : ShouldSpec({
 
         // then
         passwordRecoveryEmailDetail.also {
-            it.username shouldBe passwordRecoveryEmailRequest.username
+            it.userId shouldBe passwordRecoveryEmailRequest.userId
             it.email shouldBe passwordRecoveryEmailRequest.email
             it.link shouldBe passwordRecoveryEmailRequest.link
         }
