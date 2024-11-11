@@ -11,10 +11,12 @@ import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestTemplate
 import pl.edu.agh.gem.config.AttachmentStoreProperties
+import pl.edu.agh.gem.external.dto.toAttachment
 import pl.edu.agh.gem.headers.HeadersUtils.withAppAcceptType
 import pl.edu.agh.gem.internal.client.AttachmentStoreClient
 import pl.edu.agh.gem.internal.client.AttachmentStoreClientException
 import pl.edu.agh.gem.internal.client.RetryableAttachmentStoreClientException
+import pl.edu.agh.gem.internal.model.Attachment
 import pl.edu.agh.gem.paths.Paths.INTERNAL
 
 @Component
@@ -24,14 +26,17 @@ class RestAttachmentStoreClient(
 ) : AttachmentStoreClient {
 
     @Retry(name = "attachmentStore")
-    override fun getReport(groupId: String, attachmentId: String): ByteArray {
+    override fun getReport(groupId: String, attachmentId: String, title: String): Attachment {
         return try {
-            restTemplate.exchange(
+            val result = restTemplate.exchange(
                 resolveReportUrl(groupId, attachmentId),
                 GET,
                 HttpEntity<Any>(HttpHeaders().withAppAcceptType()),
                 ByteArray::class.java,
-            ).body ?: throw AttachmentStoreClientException("While trying to retrieve report attachment we receive empty body")
+            )
+            result.headers.contentType?.let { result.body?.toAttachment(it.toString(), title) } ?: throw AttachmentStoreClientException(
+                "While trying to retrieve report attachment we receive empty body",
+            )
         } catch (ex: HttpClientErrorException) {
             logger.warn(ex) { "Client side exception while trying to retrieve report attachment" }
             throw AttachmentStoreClientException(ex.message)

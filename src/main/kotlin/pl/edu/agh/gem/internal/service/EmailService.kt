@@ -1,7 +1,6 @@
 package pl.edu.agh.gem.internal.service
 
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.core.io.ByteArrayResource
 import org.springframework.stereotype.Service
 import pl.edu.agh.gem.internal.client.AttachmentStoreClient
 import pl.edu.agh.gem.internal.client.AuthenticatorClient
@@ -9,7 +8,6 @@ import pl.edu.agh.gem.internal.client.ExternalEmailSenderClient
 import pl.edu.agh.gem.internal.client.UserDetailsManagerClient
 import pl.edu.agh.gem.internal.factory.EmailFactory
 import pl.edu.agh.gem.internal.filereader.FileReader
-import pl.edu.agh.gem.internal.model.Attachment
 import pl.edu.agh.gem.internal.model.PasswordEmailDetails
 import pl.edu.agh.gem.internal.model.PasswordRecoveryEmailDetails
 import pl.edu.agh.gem.internal.model.ReportEmailDetails
@@ -54,9 +52,8 @@ class EmailService(
         val text = fileReader.read(REPORT_HTML_PATH)
             .replace(USERNAME_INTERPOLATION_STRING, username)
         val email = authenticatorClient.getEmailAddress(emailDetails.creatorId)
-        val report = attachmentStoreClient.getReport(emailDetails.groupId, emailDetails.attachmentId)
-        val attachment = Attachment(file = ByteArrayResource(report), title = emailDetails.title)
-        externalEmailSenderClient.sendEmail(emailFactory.createEmail(email, REPORT_EMAIL_SUBJECT, text, attachment))
+        val report = attachmentStoreClient.getReport(emailDetails.groupId, emailDetails.attachmentId, emailDetails.title)
+        externalEmailSenderClient.sendEmail(emailFactory.createEmail(email, REPORT_EMAIL_SUBJECT, text, report))
     }
 
     companion object {

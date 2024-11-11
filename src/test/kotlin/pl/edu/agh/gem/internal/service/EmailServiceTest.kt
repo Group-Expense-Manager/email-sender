@@ -19,7 +19,7 @@ import pl.edu.agh.gem.internal.factory.EmailFactory
 import pl.edu.agh.gem.internal.filereader.FileReader
 import pl.edu.agh.gem.util.DummyData.DUMMY_HTML
 import pl.edu.agh.gem.util.DummyData.DUMMY_USERNAME
-import pl.edu.agh.gem.util.TestHelper.CSV_FILE
+import pl.edu.agh.gem.util.createAttachment
 import pl.edu.agh.gem.util.createPasswordEmailDetails
 import pl.edu.agh.gem.util.createPasswordRecoveryEmailDetails
 import pl.edu.agh.gem.util.createReportEmailDetails
@@ -94,7 +94,7 @@ class EmailServiceTest : ShouldSpec({
         val reportEmailDetails = createReportEmailDetails()
         whenever(fileReader.read(anyVararg())).thenReturn(DUMMY_HTML)
         whenever(emailFactory.createEmail(any(), any(), any(), any())).thenReturn(mimeMessage)
-        whenever(attachmentStoreClient.getReport(any(), any())).thenReturn(CSV_FILE)
+        whenever(attachmentStoreClient.getReport(any(), any(), any())).thenReturn(createAttachment())
         whenever(authenticatorClient.getEmailAddress(USER_ID)).thenReturn(EMAIL)
         whenever(userDetailsManagerClient.getUsername(USER_ID)).thenReturn(DUMMY_USERNAME)
 
@@ -104,7 +104,7 @@ class EmailServiceTest : ShouldSpec({
         // then
         verify(fileReader, times(1)).read(any())
         verify(externalEmailSenderClient, times(1)).sendEmail(any())
-        verify(attachmentStoreClient, times(1)).getReport(any(), any())
+        verify(attachmentStoreClient, times(1)).getReport(any(), any(), any())
         verify(authenticatorClient, times(1)).getEmailAddress(USER_ID)
         verify(userDetailsManagerClient, times(1)).getUsername(USER_ID)
     }
