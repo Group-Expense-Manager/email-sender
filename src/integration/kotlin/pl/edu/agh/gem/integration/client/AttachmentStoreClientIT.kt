@@ -11,6 +11,7 @@ import pl.edu.agh.gem.internal.client.AttachmentStoreClient
 import pl.edu.agh.gem.internal.client.AttachmentStoreClientException
 import pl.edu.agh.gem.internal.client.RetryableAttachmentStoreClientException
 import pl.edu.agh.gem.util.DummyData.ATTACHMENT_ID
+import pl.edu.agh.gem.util.DummyData.DUMMY_SUBJECT
 import pl.edu.agh.gem.util.TestHelper.CSV_FILE
 
 class AttachmentStoreClientIT(
@@ -21,7 +22,7 @@ class AttachmentStoreClientIT(
         stubReport(CSV_FILE, GROUP_ID, ATTACHMENT_ID)
 
         // when
-        val result = attachmentStoreClient.getReport(GROUP_ID, ATTACHMENT_ID)
+        val result = attachmentStoreClient.getReport(GROUP_ID, ATTACHMENT_ID, DUMMY_SUBJECT)
 
         // then
         result shouldNotBe null
@@ -33,7 +34,7 @@ class AttachmentStoreClientIT(
 
         // when & then
         shouldThrow<AttachmentStoreClientException> {
-            attachmentStoreClient.getReport(GROUP_ID, ATTACHMENT_ID)
+            attachmentStoreClient.getReport(GROUP_ID, ATTACHMENT_ID, DUMMY_SUBJECT)
         }
     }
 
@@ -43,7 +44,7 @@ class AttachmentStoreClientIT(
 
         // when & then
         shouldThrow<RetryableAttachmentStoreClientException> {
-            attachmentStoreClient.getReport(GROUP_ID, ATTACHMENT_ID)
+            attachmentStoreClient.getReport(GROUP_ID, ATTACHMENT_ID, DUMMY_SUBJECT)
         }
     }
 },)

@@ -9,6 +9,7 @@ import pl.edu.agh.gem.external.dto.VerificationEmailRequest
 import pl.edu.agh.gem.helper.group.DummyGroup.GROUP_ID
 import pl.edu.agh.gem.helper.user.DummyUser.EMAIL
 import pl.edu.agh.gem.helper.user.DummyUser.USER_ID
+import pl.edu.agh.gem.internal.model.Attachment
 import pl.edu.agh.gem.internal.model.PasswordEmailDetails
 import pl.edu.agh.gem.internal.model.PasswordRecoveryEmailDetails
 import pl.edu.agh.gem.internal.model.ReportEmailDetails
@@ -114,6 +115,16 @@ fun createUsernameResponse(
     username: String = DUMMY_USERNAME,
 ) = UsernameResponse(
     username = username,
+)
+
+fun createAttachment(
+    title: String = "My report",
+    file: ByteArray = TestHelper.CSV_FILE,
+    type: String = "csv",
+) = Attachment(
+    title = title,
+    file = file,
+    type = type,
 )
 
 object DummyData {
