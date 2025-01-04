@@ -16,34 +16,34 @@ import pl.edu.agh.gem.util.DummyData.DUMMY_USERNAME
 class UserDetailsManagerClientIT(
     private val userDetailsManagerClient: UserDetailsManagerClient,
 ) : BaseIntegrationSpec({
-    should("get username") {
-        // given
-        stubGetUsername(DUMMY_USERNAME.toUsernameResponse(), USER_ID)
+        should("get username") {
+            // given
+            stubGetUsername(DUMMY_USERNAME.toUsernameResponse(), USER_ID)
 
-        // when
-        val username = userDetailsManagerClient.getUsername(USER_ID)
+            // when
+            val username = userDetailsManagerClient.getUsername(USER_ID)
 
-        // then
-        username shouldBe DUMMY_USERNAME
-    }
-
-    should("throw UserDetailsManagerClientException when we send bad request") {
-        // given
-        stubGetUsername(DUMMY_USERNAME.toUsernameResponse(), USER_ID, NOT_ACCEPTABLE)
-
-        // when & then
-        shouldThrow<UserDetailsManagerClientException> {
-            userDetailsManagerClient.getUsername(USER_ID)
+            // then
+            username shouldBe DUMMY_USERNAME
         }
-    }
 
-    should("throw RetryableUserDetailsManagerClientException when client has internal error") {
-        // given
-        stubGetUsername(DUMMY_USERNAME.toUsernameResponse(), USER_ID, INTERNAL_SERVER_ERROR)
+        should("throw UserDetailsManagerClientException when we send bad request") {
+            // given
+            stubGetUsername(DUMMY_USERNAME.toUsernameResponse(), USER_ID, NOT_ACCEPTABLE)
 
-        // when & then
-        shouldThrow<RetryableUserDetailsManagerClientException> {
-            userDetailsManagerClient.getUsername(USER_ID)
+            // when & then
+            shouldThrow<UserDetailsManagerClientException> {
+                userDetailsManagerClient.getUsername(USER_ID)
+            }
         }
-    }
-},)
+
+        should("throw RetryableUserDetailsManagerClientException when client has internal error") {
+            // given
+            stubGetUsername(DUMMY_USERNAME.toUsernameResponse(), USER_ID, INTERNAL_SERVER_ERROR)
+
+            // when & then
+            shouldThrow<RetryableUserDetailsManagerClientException> {
+                userDetailsManagerClient.getUsername(USER_ID)
+            }
+        }
+    })

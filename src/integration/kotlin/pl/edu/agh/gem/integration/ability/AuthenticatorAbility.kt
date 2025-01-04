@@ -10,10 +10,13 @@ import pl.edu.agh.gem.headers.HeadersTestUtils.withAppContentType
 import pl.edu.agh.gem.integration.environment.ProjectConfig.wiremock
 import pl.edu.agh.gem.paths.Paths.INTERNAL
 
-private fun getEmailAddressUrl(userId: String) =
-    "$INTERNAL/users/$userId/email"
+private fun getEmailAddressUrl(userId: String) = "$INTERNAL/users/$userId/email"
 
-fun stubEmailAddress(body: Any?, userId: String, statusCode: HttpStatusCode = OK) {
+fun stubEmailAddress(
+    body: Any?,
+    userId: String,
+    statusCode: HttpStatusCode = OK,
+) {
     wiremock.stubFor(
         get(urlMatching(getEmailAddressUrl(userId)))
             .willReturn(

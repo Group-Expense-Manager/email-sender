@@ -20,4 +20,4 @@ class VerificationEmailRequestTest : ShouldSpec({
             it.code shouldBe verificationEmailRequest.code
         }
     }
-},)
+})

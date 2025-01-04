@@ -16,34 +16,34 @@ import pl.edu.agh.gem.util.createEmailAddressResponse
 class AuthenticatorClientIT(
     private val authenticatorClient: AuthenticatorClient,
 ) : BaseIntegrationSpec({
-    should("get email address") {
-        // given
-        stubEmailAddress(createEmailAddressResponse(EMAIL), USER_ID)
+        should("get email address") {
+            // given
+            stubEmailAddress(createEmailAddressResponse(EMAIL), USER_ID)
 
-        // when
-        val email = authenticatorClient.getEmailAddress(USER_ID)
+            // when
+            val email = authenticatorClient.getEmailAddress(USER_ID)
 
-        // then
-        email shouldBe EMAIL
-    }
-
-    should("throw AuthenticatorClientException when we send bad request") {
-        // given
-        stubEmailAddress(createEmailAddressResponse(EMAIL), USER_ID, NOT_ACCEPTABLE)
-
-        // when & then
-        shouldThrow<AuthenticatorClientException> {
-            authenticatorClient.getEmailAddress(USER_ID)
+            // then
+            email shouldBe EMAIL
         }
-    }
 
-    should("throw RetryableAuthenticatorClientException when client has internal error") {
-        // given
-        stubEmailAddress(createEmailAddressResponse(EMAIL), USER_ID, INTERNAL_SERVER_ERROR)
+        should("throw AuthenticatorClientException when we send bad request") {
+            // given
+            stubEmailAddress(createEmailAddressResponse(EMAIL), USER_ID, NOT_ACCEPTABLE)
 
-        // when & then
-        shouldThrow<RetryableAuthenticatorClientException> {
-            authenticatorClient.getEmailAddress(USER_ID)
+            // when & then
+            shouldThrow<AuthenticatorClientException> {
+                authenticatorClient.getEmailAddress(USER_ID)
+            }
         }
-    }
-},)
+
+        should("throw RetryableAuthenticatorClientException when client has internal error") {
+            // given
+            stubEmailAddress(createEmailAddressResponse(EMAIL), USER_ID, INTERNAL_SERVER_ERROR)
+
+            // when & then
+            shouldThrow<RetryableAuthenticatorClientException> {
+                authenticatorClient.getEmailAddress(USER_ID)
+            }
+        }
+    })

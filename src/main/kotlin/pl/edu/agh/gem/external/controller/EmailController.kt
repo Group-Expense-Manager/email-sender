@@ -19,7 +19,6 @@ import pl.edu.agh.gem.paths.Paths.INTERNAL
 class EmailController(
     private val emailService: EmailService,
 ) {
-
     @PostMapping("verification", consumes = [APPLICATION_JSON_INTERNAL_VER_1])
     @ResponseStatus(OK)
     fun sendVerificationEmail(

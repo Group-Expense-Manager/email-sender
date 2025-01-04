@@ -4,5 +4,10 @@ import jakarta.mail.internet.MimeMessage
 import pl.edu.agh.gem.internal.model.Attachment
 
 interface EmailFactory {
-    fun createEmail(email: String, subject: String, html: String, attachment: Attachment? = null): MimeMessage
+    fun createEmail(
+        email: String,
+        subject: String,
+        html: String,
+        attachment: Attachment? = null,
+    ): MimeMessage
 }

@@ -34,14 +34,15 @@ class EmailServiceTest : ShouldSpec({
     val emailFactory = mock<EmailFactory> {}
     val mimeMessage = mock<MimeMessage> {}
 
-    val emailService = EmailService(
-        externalEmailSenderClient = externalEmailSenderClient,
-        attachmentStoreClient = attachmentStoreClient,
-        authenticatorClient = authenticatorClient,
-        userDetailsManagerClient = userDetailsManagerClient,
-        fileReader = fileReader,
-        emailFactory = emailFactory,
-    )
+    val emailService =
+        EmailService(
+            externalEmailSenderClient = externalEmailSenderClient,
+            attachmentStoreClient = attachmentStoreClient,
+            authenticatorClient = authenticatorClient,
+            userDetailsManagerClient = userDetailsManagerClient,
+            fileReader = fileReader,
+            emailFactory = emailFactory,
+        )
 
     should("send verification email") {
         // given
@@ -108,4 +109,4 @@ class EmailServiceTest : ShouldSpec({
         verify(authenticatorClient, times(1)).getEmailAddress(USER_ID)
         verify(userDetailsManagerClient, times(1)).getUsername(USER_ID)
     }
-},)
+})

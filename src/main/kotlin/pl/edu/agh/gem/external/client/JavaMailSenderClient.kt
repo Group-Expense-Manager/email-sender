@@ -1,8 +1,8 @@
 package pl.edu.agh.gem.external.client
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.github.resilience4j.retry.annotation.Retry
 import jakarta.mail.internet.MimeMessage
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.mail.MailException
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Component
@@ -15,7 +15,6 @@ import pl.edu.agh.gem.metrics.MeteredClient
 class JavaMailSenderClient(
     private val javaMailSender: JavaMailSender,
 ) : ExternalEmailSenderClient {
-
     @Retry(name = "default")
     override fun sendEmail(mimeMessage: MimeMessage) {
         try {

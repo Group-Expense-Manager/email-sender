@@ -1,7 +1,7 @@
 package pl.edu.agh.gem.external.client
 
-import io.github.resilience4j.retry.annotation.Retry
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.github.resilience4j.retry.annotation.Retry
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -25,7 +25,6 @@ class RestUserDetailsManagerClient(
     @Qualifier("UserDetailsManagerClientRestTemplate") val restTemplate: RestTemplate,
     private val userDetailsManagerClientProperties: UserDetailsManagerClientProperties,
 ) : UserDetailsManagerClient {
-
     @Retry(name = "userDetailsManager")
     override fun getUsername(userId: String): String {
         return try {

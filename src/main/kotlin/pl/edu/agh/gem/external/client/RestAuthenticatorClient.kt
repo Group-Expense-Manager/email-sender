@@ -1,7 +1,7 @@
 package pl.edu.agh.gem.external.client
 
-import io.github.resilience4j.retry.annotation.Retry
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.github.resilience4j.retry.annotation.Retry
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -25,7 +25,6 @@ class RestAuthenticatorClient(
     @Qualifier("AuthenticatorRestTemplate") val restTemplate: RestTemplate,
     val authenticatorProperties: AuthenticatorProperties,
 ) : AuthenticatorClient {
-
     @Retry(name = "authenticator")
     override fun getEmailAddress(userId: String): String {
         return try {
@@ -49,8 +48,7 @@ class RestAuthenticatorClient(
         }
     }
 
-    private fun resolveEmailAddressUrl(userId: String) =
-        "${authenticatorProperties.url}$INTERNAL/users/$userId/email"
+    private fun resolveEmailAddressUrl(userId: String) = "${authenticatorProperties.url}$INTERNAL/users/$userId/email"
 
     companion object {
         private val logger = KotlinLogging.logger {}

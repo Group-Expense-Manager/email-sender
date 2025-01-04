@@ -8,10 +8,11 @@ data class ReportEmailRequest(
     val groupId: String,
     val attachmentId: String,
 ) {
-    fun toDomain() = ReportEmailDetails(
-        creatorId = creatorId,
-        title = title,
-        groupId = groupId,
-        attachmentId = attachmentId,
-    )
+    fun toDomain() =
+        ReportEmailDetails(
+            creatorId = creatorId,
+            title = title,
+            groupId = groupId,
+            attachmentId = attachmentId,
+        )
 }

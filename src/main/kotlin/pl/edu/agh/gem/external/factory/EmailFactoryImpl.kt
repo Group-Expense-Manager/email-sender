@@ -22,7 +22,12 @@ class EmailFactoryImpl(
     private val javaMailSender: JavaMailSender,
     private val emailProperties: EmailProperties,
 ) : EmailFactory {
-    override fun createEmail(email: String, subject: String, html: String, attachment: Attachment?): MimeMessage {
+    override fun createEmail(
+        email: String,
+        subject: String,
+        html: String,
+        attachment: Attachment?,
+    ): MimeMessage {
         val mimeMessage: MimeMessage = javaMailSender.createMimeMessage()
         val helper = MimeMessageHelper(mimeMessage, MULTIPART_MODE_RELATED, UTF_8.name())
         helper.setFrom(emailProperties.username)

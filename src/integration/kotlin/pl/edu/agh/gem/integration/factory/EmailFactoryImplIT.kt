@@ -11,17 +11,17 @@ import pl.edu.agh.gem.util.DummyData.DUMMY_SUBJECT
 class EmailFactoryImplIT(
     private val emailFactory: EmailFactoryImpl,
 ) : BaseIntegrationSpec({
-    should("create email correctly") {
-        // given & when
-        val result = emailFactory.createEmail(EMAIL, DUMMY_SUBJECT, DUMMY_HTML)
+        should("create email correctly") {
+            // given & when
+            val result = emailFactory.createEmail(EMAIL, DUMMY_SUBJECT, DUMMY_HTML)
 
-        // then
-        result.also {
-            it.from.size shouldBe 1
-            it.allRecipients.size shouldBe 1
-            it.allRecipients.first().toString() shouldBe EMAIL
-            it.subject shouldBe DUMMY_SUBJECT
-            it.content.shouldNotBeNull()
+            // then
+            result.also {
+                it.from.size shouldBe 1
+                it.allRecipients.size shouldBe 1
+                it.allRecipients.first().toString() shouldBe EMAIL
+                it.subject shouldBe DUMMY_SUBJECT
+                it.content.shouldNotBeNull()
+            }
         }
-    }
-},)
+    })

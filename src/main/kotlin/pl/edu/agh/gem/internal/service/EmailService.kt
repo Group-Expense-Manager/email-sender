@@ -21,36 +21,39 @@ class EmailService(
     private val userDetailsManagerClient: UserDetailsManagerClient,
     private val fileReader: FileReader,
     private val emailFactory: EmailFactory,
-
 ) {
     fun sendVerificationEmail(emailDetails: VerificationEmailDetails) {
-        val text = fileReader.read(VERIFICATION_HTML_PATH)
-            .replace(USERNAME_INTERPOLATION_STRING, emailDetails.username)
-            .replace(CODE_INTERPOLATION_STRING, emailDetails.code)
+        val text =
+            fileReader.read(VERIFICATION_HTML_PATH)
+                .replace(USERNAME_INTERPOLATION_STRING, emailDetails.username)
+                .replace(CODE_INTERPOLATION_STRING, emailDetails.code)
 
         externalEmailSenderClient.sendEmail(emailFactory.createEmail(emailDetails.email, VERIFICATION_EMAIL_SUBJECT, text))
     }
 
     fun sendPasswordRecoveryEmail(emailDetails: PasswordRecoveryEmailDetails) {
         val username = userDetailsManagerClient.getUsername(emailDetails.userId)
-        val text = fileReader.read(PASSWORD_RECOVERY_HTML_PATH)
-            .replace(USERNAME_INTERPOLATION_STRING, username)
-            .replace(LINK_INTERPOLATION_STRING, emailDetails.link)
+        val text =
+            fileReader.read(PASSWORD_RECOVERY_HTML_PATH)
+                .replace(USERNAME_INTERPOLATION_STRING, username)
+                .replace(LINK_INTERPOLATION_STRING, emailDetails.link)
         externalEmailSenderClient.sendEmail(emailFactory.createEmail(emailDetails.email, PASSWORD_RECOVERY_EMAIL_SUBJECT, text))
     }
 
     fun sendPasswordEmail(emailDetails: PasswordEmailDetails) {
         val username = userDetailsManagerClient.getUsername(emailDetails.userId)
-        val text = fileReader.read(PASSWORD_HTML_PATH)
-            .replace(USERNAME_INTERPOLATION_STRING, username)
-            .replace(PASSWORD_INTERPOLATION_STRING, emailDetails.password)
+        val text =
+            fileReader.read(PASSWORD_HTML_PATH)
+                .replace(USERNAME_INTERPOLATION_STRING, username)
+                .replace(PASSWORD_INTERPOLATION_STRING, emailDetails.password)
         externalEmailSenderClient.sendEmail(emailFactory.createEmail(emailDetails.email, PASSWORD_EMAIL_SUBJECT, text))
     }
 
     fun sendReport(emailDetails: ReportEmailDetails) {
         val username = userDetailsManagerClient.getUsername(emailDetails.creatorId)
-        val text = fileReader.read(REPORT_HTML_PATH)
-            .replace(USERNAME_INTERPOLATION_STRING, username)
+        val text =
+            fileReader.read(REPORT_HTML_PATH)
+                .replace(USERNAME_INTERPOLATION_STRING, username)
         val email = authenticatorClient.getEmailAddress(emailDetails.creatorId)
         val report = attachmentStoreClient.getReport(emailDetails.groupId, emailDetails.attachmentId, emailDetails.title)
         externalEmailSenderClient.sendEmail(emailFactory.createEmail(email, REPORT_EMAIL_SUBJECT, text, report))
