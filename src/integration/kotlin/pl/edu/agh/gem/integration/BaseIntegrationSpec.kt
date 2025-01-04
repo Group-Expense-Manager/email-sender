@@ -2,7 +2,7 @@ package pl.edu.agh.gem.integration
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.core.test.TestCaseOrder
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 import org.springframework.test.context.ActiveProfiles
