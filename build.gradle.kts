@@ -145,7 +145,7 @@ tasks {
         classpath = sourceSets["integration"].runtimeClasspath
         mustRunAfter("test")
     }
-    
+
     check {
         dependsOn("integration")
     }
@@ -160,7 +160,6 @@ tasks {
         }
         finalizedBy("bootRun")
     }
-    
 
     getByName<Jar>("jar") {
         enabled = false
@@ -176,7 +175,7 @@ tasks {
     withType<Detekt>().configureEach {
         jvmTarget = tools.versions.jvm.get()
     }
-    
+
     withType<DetektCreateBaselineTask>().configureEach {
         jvmTarget = tools.versions.jvm.get()
     }
