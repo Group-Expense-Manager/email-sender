@@ -3,7 +3,6 @@ import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -113,12 +112,6 @@ kotlin {
     }
 }
 
-ktlint {
-    reporters {
-        reporter(ReporterType.PLAIN)
-    }
-}
-
 sourceSets {
     create("integration") {
         compileClasspath += project.sourceSets["main"].output + project.sourceSets["test"].output
@@ -152,9 +145,22 @@ tasks {
         classpath = sourceSets["integration"].runtimeClasspath
         mustRunAfter("test")
     }
+    
     check {
         dependsOn("integration")
     }
+
+    register("bootRunLocal") {
+        group = "application"
+        description = "Runs this project as a Spring Boot application with the local profile"
+        doFirst {
+            bootRun.configure {
+                systemProperty("spring.profiles.active", "local")
+            }
+        }
+        finalizedBy("bootRun")
+    }
+    
 
     getByName<Jar>("jar") {
         enabled = false
@@ -170,6 +176,7 @@ tasks {
     withType<Detekt>().configureEach {
         jvmTarget = tools.versions.jvm.get()
     }
+    
     withType<DetektCreateBaselineTask>().configureEach {
         jvmTarget = tools.versions.jvm.get()
     }
