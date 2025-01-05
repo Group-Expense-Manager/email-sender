@@ -1,7 +1,7 @@
 package pl.edu.agh.gem.external.client
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.github.resilience4j.retry.annotation.Retry
-import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -17,23 +17,29 @@ import pl.edu.agh.gem.internal.client.AttachmentStoreClient
 import pl.edu.agh.gem.internal.client.AttachmentStoreClientException
 import pl.edu.agh.gem.internal.client.RetryableAttachmentStoreClientException
 import pl.edu.agh.gem.internal.model.Attachment
+import pl.edu.agh.gem.metrics.MeteredClient
 import pl.edu.agh.gem.paths.Paths.INTERNAL
 
 @Component
+@MeteredClient
 class RestAttachmentStoreClient(
     @Qualifier("AttachmentStoreRestTemplate") val restTemplate: RestTemplate,
     val attachmentStoreProperties: AttachmentStoreProperties,
 ) : AttachmentStoreClient {
-
     @Retry(name = "attachmentStore")
-    override fun getReport(groupId: String, attachmentId: String, title: String): Attachment {
+    override fun getReport(
+        groupId: String,
+        attachmentId: String,
+        title: String,
+    ): Attachment {
         return try {
-            val result = restTemplate.exchange(
-                resolveReportUrl(groupId, attachmentId),
-                GET,
-                HttpEntity<Any>(HttpHeaders().withAppAcceptType()),
-                ByteArray::class.java,
-            )
+            val result =
+                restTemplate.exchange(
+                    resolveReportUrl(groupId, attachmentId),
+                    GET,
+                    HttpEntity<Any>(HttpHeaders().withAppAcceptType()),
+                    ByteArray::class.java,
+                )
             result.headers.contentType?.let { result.body?.toAttachment(it.toString(), title) } ?: throw AttachmentStoreClientException(
                 "While trying to retrieve report attachment we receive empty body",
             )
@@ -51,8 +57,10 @@ class RestAttachmentStoreClient(
         }
     }
 
-    private fun resolveReportUrl(groupId: String, attachmentId: String) =
-        "${attachmentStoreProperties.url}$INTERNAL/groups/$groupId/attachments/$attachmentId"
+    private fun resolveReportUrl(
+        groupId: String,
+        attachmentId: String,
+    ) = "${attachmentStoreProperties.url}$INTERNAL/groups/$groupId/attachments/$attachmentId"
 
     companion object {
         private val logger = KotlinLogging.logger {}

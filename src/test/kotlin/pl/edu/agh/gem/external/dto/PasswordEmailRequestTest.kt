@@ -20,4 +20,4 @@ class PasswordEmailRequestTest : ShouldSpec({
             it.password shouldBe passwordEmailRequest.password
         }
     }
-},)
+})

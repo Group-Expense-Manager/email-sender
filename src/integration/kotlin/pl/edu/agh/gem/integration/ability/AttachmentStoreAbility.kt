@@ -10,10 +10,17 @@ import pl.edu.agh.gem.headers.HeadersTestUtils.withAppContentType
 import pl.edu.agh.gem.integration.environment.ProjectConfig.wiremock
 import pl.edu.agh.gem.paths.Paths.INTERNAL
 
-private fun getReportUrl(groupId: String, attachmentId: String) =
-    "$INTERNAL/groups/$groupId/attachments/$attachmentId"
+private fun getReportUrl(
+    groupId: String,
+    attachmentId: String,
+) = "$INTERNAL/groups/$groupId/attachments/$attachmentId"
 
-fun stubReport(body: Any?, groupId: String, attachmentId: String, statusCode: HttpStatusCode = OK) {
+fun stubReport(
+    body: Any?,
+    groupId: String,
+    attachmentId: String,
+    statusCode: HttpStatusCode = OK,
+) {
     wiremock.stubFor(
         get(urlMatching(getReportUrl(groupId, attachmentId)))
             .willReturn(

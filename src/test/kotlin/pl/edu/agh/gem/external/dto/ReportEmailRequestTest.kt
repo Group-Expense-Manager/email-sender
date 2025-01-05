@@ -21,4 +21,4 @@ class ReportEmailRequestTest : ShouldSpec({
             it.attachmentId shouldBe reportEmailRequest.attachmentId
         }
     }
-},)
+})

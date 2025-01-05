@@ -12,7 +12,11 @@ import pl.edu.agh.gem.paths.Paths.INTERNAL
 
 private fun getUserNameUrl(userId: String) = "$INTERNAL/user-details/username/$userId"
 
-fun stubGetUsername(body: Any?, userId: String, statusCode: HttpStatusCode = OK) {
+fun stubGetUsername(
+    body: Any?,
+    userId: String,
+    statusCode: HttpStatusCode = OK,
+) {
     wiremock.stubFor(
         get(urlMatching(getUserNameUrl(userId)))
             .willReturn(

@@ -105,17 +105,15 @@ fun createReportEmailDetails(
     attachmentId = attachmentId,
 )
 
-fun createEmailAddressResponse(
-    email: String = EMAIL,
-) = EmailAddressResponse(
-    email = email,
-)
+fun createEmailAddressResponse(email: String = EMAIL) =
+    EmailAddressResponse(
+        email = email,
+    )
 
-fun createUsernameResponse(
-    username: String = DUMMY_USERNAME,
-) = UsernameResponse(
-    username = username,
-)
+fun createUsernameResponse(username: String = DUMMY_USERNAME) =
+    UsernameResponse(
+        username = username,
+    )
 
 fun createAttachment(
     title: String = "My report",

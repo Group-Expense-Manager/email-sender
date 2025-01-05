@@ -16,9 +16,10 @@ import java.net.URI
 @Component
 @Lazy
 class ServiceTestClient(applicationContext: WebApplicationContext) {
-    private val webClient = bindToApplicationContext(applicationContext)
-        .configureClient()
-        .build()
+    private val webClient =
+        bindToApplicationContext(applicationContext)
+            .configureClient()
+            .build()
 
     fun sendVerificationEmail(body: VerificationEmailRequest): ResponseSpec {
         return webClient.post()

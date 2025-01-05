@@ -20,4 +20,4 @@ class PasswordRecoveryEmailRequestTest : ShouldSpec({
             it.link shouldBe passwordRecoveryEmailRequest.link
         }
     }
-},)
+})
