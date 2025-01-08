@@ -1,0 +1,178 @@
+openapi: 3.0.1
+info:
+  title: Email API
+  version: v1
+  description: API for sending emails.
+
+paths:
+  /internal/password:
+    post:
+      tags:
+        - Internal Group
+      summary: "Send new password"
+      description: "Send new password via email"
+      operationId: "password"
+      requestBody:
+        $ref: "#/components/requestBodies/PasswordEmailRequest"
+      responses:
+        "200":
+          description: "OK"
+  /internal/recover-password:
+    post:
+      tags:
+        - Internal Group
+      summary: "Recover password recovery link"
+      description: "Send password recovery link via email"
+      operationId: "recoverPassword"
+      requestBody:
+        $ref: "#/components/requestBodies/PasswordRecoveryEmailRequest"
+      responses:
+        "200":
+          description: "OK"
+  /internal/report:
+    post:
+      tags:
+        - Internal Group
+      summary: "Send report"
+      description: "Send report via email"
+      operationId: "sendReport"
+      requestBody:
+        $ref: "#/components/requestBodies/ReportEmailRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+  /internal/verification:
+    post:
+      tags:
+        - Internal Group
+      summary: "Send verification email"
+      description: "Send email with verification code"
+      operationId: "verification"
+      requestBody:
+        content:
+          application/vnd.gem.internal.v1+json:
+            schema:
+              $ref: "#/components/schemas/VerificationEmailRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+
+components:
+  requestBodies:
+    PasswordEmailRequest:
+      description: Password Email Request.
+      content:
+        application/vnd.gem.internal.v1+json:
+          schema:
+            $ref: '#/components/schemas/PasswordEmailRequest'
+          examples:
+            examplePasswordEmailRequest:
+              value:
+                userId: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+                email: "user@email.com"
+                password: "Password123!"
+    PasswordRecoveryEmailRequest:
+      description: Reset Password Request.
+      content:
+        application/vnd.gem.internal.v1+json:
+          schema:
+            $ref: '#/components/schemas/PasswordRecoveryEmailRequest'
+          examples:
+            examplePasswordRecoveryEmailRequest:
+              value:
+                userId: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+                email: "user@email.com"
+                link: "https://gem.link.com"
+    ReportEmailRequest:
+      description: Send Email Request.
+      content:
+        application/vnd.gem.internal.v1+json:
+          schema:
+            $ref: '#/components/schemas/ReportEmailRequest'
+          examples:
+            exampleReportEmailRequest:
+              value:
+                creatorId: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+                title: "My New Report"
+                groupId: "53f34d91-0172-4674-af73-813a666de1a9"
+                attachmentId: "c224f4a2-625e-42fb-9306-5f81aa817293"
+    VerificationEmailRequest:
+      description: Account Verification Request.
+      content:
+        application/vnd.gem.internal.v1+json:
+          schema:
+            $ref: '#/components/schemas/VerificationEmailRequest'
+          examples:
+            exampleVerificationEmailRequest:
+              value:
+                username: "user123"
+                email: "user@email.com"
+                code: "Afedfe4k"
+
+  schemas:
+    PasswordEmailRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: The ID of the user.
+          example: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+        email:
+          type: string
+          description: Email of the user.
+          example: "user@email.com"
+        password:
+          type: string
+          description: New password.
+          example: "Password123!"
+    PasswordRecoveryEmailRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: The ID of the user.
+          example: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+        email:
+          type: string
+          description: Email of the user.
+          example: "user@email.com"
+        link:
+          type: string
+          description: Link to reset password.
+          example: "https://gem.link.com"
+    ReportEmailRequest:
+      type: object
+      properties:
+        creatorId:
+          type: string
+          description: The ID of the report creator.
+          example: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+        title:
+          type: string
+          description: Title of the report.
+          example: "My New Report"
+        groupId:
+          type: string
+          description: The ID of the group.
+          example: "53f34d91-0172-4674-af73-813a666de1a9"
+        attachmentId:
+          type: string
+          description: The ID of the attachment.
+          example: "c224f4a2-625e-42fb-9306-5f81aa817293"
+    VerificationEmailRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Name of the user.
+          example: "user123"
+        email:
+          type: string
+          description: Email of the user.
+          example: "user@email.com"
+        code:
+          type: string
+          description: Verification code.
+          example: Afedfe4k
