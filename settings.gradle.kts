@@ -55,7 +55,7 @@ dependencyResolutionManagement {
 
             library("mockito", "org.mockito.kotlin:mockito-kotlin:5.4.0")
             library("archunit", "com.tngtech.archunit:archunit-junit5:1.3.0")
-            library("green-mail", "com.icegreen:greenmail:2.1.2")
+            library("green-mail", "com.icegreen:greenmail:2.1.3")
 
             library("kotest-spring", "io.kotest.extensions:kotest-extensions-spring:1.3.0")
             library("kotest-wiremock", "io.kotest.extensions:kotest-extensions-wiremock:3.1.0")
